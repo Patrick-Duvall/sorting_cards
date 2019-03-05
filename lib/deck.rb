@@ -1,13 +1,4 @@
 
-  def quicksort
-      return [] if empty?
-
-      pivot = delete_at(rand(size))
-      left, right = partition(&pivot.method(:>))
-
-      return *left.quicksort, pivot, *right.quicksort
-    end
-
 
 class Deck < Array
 
@@ -31,18 +22,6 @@ class Deck < Array
     self
   end
 
-  def merge_sort
-    if self.length <= 1
-      self
-    else
-      mid = (self.length / 2).floor
-      left = Deck.new(self[0..mid-1]).merge_sort
-      right = Deck.new(self[mid..self.length]).merge_sort
-      merge(left, right)
-    end
-
-  end
-
   def merge(left, right)
     if left.empty?
       right
@@ -55,14 +34,29 @@ class Deck < Array
     end
   end
 
-  # def quicksort
-  #     return [] if empty?
-  #
-  #     pivot = delete_at(rand(size))
-  #     left, right = partition(&pivot.method(:>))
-  #
-  #     return *left.quicksort, pivot, *right.quicksort
-  #   end
-  # end
+  def merge_sort
+    if self.length <= 1
+      self
+    else
+      mid = (self.length / 2).floor
+      left = Deck.new(self[0..mid-1]).merge_sort
+      right = Deck.new(self[mid..self.length]).merge_sort
+      merge(left, right)
+    end
+
+  end
+
+
+
+  def quick_sort
+    return [] if empty?
+
+    pivot = delete_at(rand(self.size))
+    left, right = partition{|card| card.exact_value < pivot.exact_value}
+    left = Deck.new(left)
+    right = Deck.new(right)
+
+    return *left.quick_sort, pivot, *right.quick_sort
+  end
 
 end
